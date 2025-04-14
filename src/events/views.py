@@ -1,4 +1,6 @@
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
+
 from .models import Event
 from .serializers import EventSerializer
 from .filters import EventFilter
@@ -7,6 +9,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 
 class EventViewSet(viewsets.ReadOnlyModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = Event.objects.select_related('venue')
     serializer_class = EventSerializer
     filterset_class = EventFilter

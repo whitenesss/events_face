@@ -1,10 +1,21 @@
 FROM python:3.11-slim
 
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-RUN pip install --no-cache-dir uv && \
-    uv pip install -r requirements.txt
+# Собираем статику с принудительным созданием директорий
+RUN mkdir -p /app/staticfiles && \
+    mkdir -p /app/static && \
+    python manage.py collectstatic --noinput --clear && \
+    chmod -R 755 /app/staticfiles
 
-CMD ["uvicorn", "core.asgi:application", "--host", "0.0.0.0", "--port", "8000"]
+EXPOSE 8000
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "src.core.wsgi:application"]

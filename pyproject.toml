@@ -1,6 +1,17 @@
 [project]
 name = "events-face"
 version = "0.1.0"
+dependencies = [
+    "Django>=4.2",
+    "djangorestframework",
+    "psycopg2-binary",
+    "gunicorn",
+    "django-cors-headers",
+    "djangorestframework-simplejwt",
+    "requests",
+    "uvicorn",
+    "whitenoise",
+]
 
 [tool.ruff.lint]
 extend-select = ["I"]

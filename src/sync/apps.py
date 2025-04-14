@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
-class AuthConfig(AppConfig):
+class SyncConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'src.auth'
+    name = 'src.sync'
